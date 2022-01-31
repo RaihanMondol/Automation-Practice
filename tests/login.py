@@ -1,21 +1,30 @@
 from selenium import webdriver
 import time
+import unittest
 
-driver = webdriver.Chrome(executable_path="F:/Automation/drivers/chromedriver.exe")
+class loginTest(unittest.TestCase):
 
-driver.implicitly_wait(10)
-driver.maximize_window()
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = webdriver.Chrome(executable_path="F:/Automation/drivers/chromedriver.exe")
+        cls.driver.implicitly_wait(10)
+        cls.driver.maximize_window()
 
-driver.get("https://opensource-demo.orangehrmlive.com/")
+    def test_login_valid(self):
+        self.driver.get("https://opensource-demo.orangehrmlive.com/")
+        self.driver.find_element_by_id("txtUsername").send_keys("Admin")
+        self.driver.find_element_by_id("txtPassword").send_keys("admin123")
+        self.driver.find_element_by_id("btnLogin").click()
+        self.driver.find_element_by_id("welcome").click()
+        self.driver.find_element_by_link_text("Logout").click()
+        time.sleep(4)
 
-driver.find_element_by_id("txtUsername").send_keys("Admin")
-driver.find_element_by_id("txtPassword").send_keys("admin123")
-driver.find_element_by_id("btnLogin").click()
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.close()
+        cls.driver.quit()
+        print("Task Completed!")
 
-driver.find_element_by_id("welcome").click()
-driver.find_element_by_link_text("Logout").click()
 
-time.sleep(4)
-driver.close()
-driver.quit()
-print("Task Completed!")
+
+
